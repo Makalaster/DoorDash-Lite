@@ -3,10 +3,12 @@ package com.makalaster.doordashlite
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 
 class RestaurantListAdapter : ListAdapter<Restaurant, RestaurantViewHolder>(diff_callback) {
 
@@ -28,7 +30,18 @@ class RestaurantListAdapter : ListAdapter<Restaurant, RestaurantViewHolder>(diff
     }
 
     override fun onBindViewHolder(holder: RestaurantViewHolder, position: Int) {
-        holder.name.text = getItem(position).business.name
+        val currentItem = getItem(position)
+
+        Picasso.get().load(currentItem.imageUrl).into(holder.icon)
+
+        holder.name.text = currentItem.business.name
+        val tags = when (currentItem.tags.size) {
+            2 -> currentItem.tags[0] + ", " + currentItem.tags[1]
+            1 -> currentItem.tags[0]
+            else -> ""
+        }
+        holder.tags.text = tags
+        holder.status.text = currentItem.status
     }
 
     fun updateItems(restaurants: List<Restaurant>) {
@@ -38,5 +51,8 @@ class RestaurantListAdapter : ListAdapter<Restaurant, RestaurantViewHolder>(diff
 }
 
 class RestaurantViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    var name: TextView = itemView.findViewById(R.id.name)
+    val icon: ImageView = itemView.findViewById(R.id.icon)
+    val name: TextView = itemView.findViewById(R.id.name)
+    val tags: TextView = itemView.findViewById(R.id.tags)
+    val status: TextView = itemView.findViewById(R.id.status)
 }
