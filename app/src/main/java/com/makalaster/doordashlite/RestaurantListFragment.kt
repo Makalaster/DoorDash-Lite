@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.restaurant_list_fragment.*
@@ -57,6 +58,7 @@ class RestaurantListFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
+        restaurant_list.addItemDecoration(DividerItemDecoration(activity, RecyclerView.VERTICAL))
         restaurant_list.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
         restaurant_list.adapter = adapter
     }
