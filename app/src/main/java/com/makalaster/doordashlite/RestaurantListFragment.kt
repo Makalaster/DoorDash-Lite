@@ -36,6 +36,14 @@ class RestaurantListFragment : Fragment() {
         }
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        swipe_layout.setOnRefreshListener {
+            viewModel.loadRestaurants()
+        }
+    }
+
     private fun initViewModel(activity: FragmentActivity) {
         viewModel = ViewModelProviders.of(activity).get(RestaurantListViewModel::class.java)
 
@@ -43,6 +51,8 @@ class RestaurantListFragment : Fragment() {
 
         viewModel.restaurants.observe(this, Observer {
             adapter.updateItems(it)
+
+            swipe_layout.isRefreshing = false
         })
     }
 
