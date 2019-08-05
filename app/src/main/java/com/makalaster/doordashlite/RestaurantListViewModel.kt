@@ -10,12 +10,17 @@ import retrofit2.Response
 class RestaurantListViewModel : ViewModel() {
     val restaurants: MutableLiveData<List<Restaurant>> = MutableLiveData()
 
+    companion object {
+        private const val HQ_LAT = 37.422740
+        private const val HQ_LNG = -122.139956
+    }
+
     init {
         loadRestaurants()
     }
 
     fun loadRestaurants() {
-        val call: Call<List<Restaurant>> = ApiClient.getClient.getRestaurants()
+        val call: Call<List<Restaurant>> = ApiClient.getClient.getRestaurants(HQ_LAT, HQ_LNG)
         call.enqueue(object : Callback<List<Restaurant>>{
             override fun onResponse(call: Call<List<Restaurant>>, response: Response<List<Restaurant>>) {
                 response.body()?.let {
