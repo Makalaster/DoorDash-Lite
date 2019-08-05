@@ -51,7 +51,7 @@ class RestaurantListFragment : Fragment() {
         initRecyclerView()
 
         viewModel.restaurants.observe(this, Observer {
-            adapter.updateItems(it)
+            adapter.submitList(it)
 
             swipe_layout.isRefreshing = false
         })

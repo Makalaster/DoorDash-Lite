@@ -43,11 +43,6 @@ class RestaurantListAdapter : ListAdapter<Restaurant, RestaurantViewHolder>(diff
         holder.tags.text = tags
         holder.status.text = currentItem.status
     }
-
-    fun updateItems(restaurants: List<Restaurant>) {
-        submitList(restaurants)
-    }
-
 }
 
 class RestaurantViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
