@@ -46,7 +46,8 @@ class RestaurantListFragment : Fragment() {
     }
 
     private fun initViewModel(activity: FragmentActivity) {
-        viewModel = ViewModelProviders.of(activity).get(RestaurantListViewModel::class.java)
+        viewModel = ViewModelProviders.of(activity, RestaurantListViewModelFactory(ApiClient.getClient))
+            .get(RestaurantListViewModel::class.java)
 
         initRecyclerView()
 
