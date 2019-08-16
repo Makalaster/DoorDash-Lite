@@ -1,5 +1,6 @@
 package com.makalaster.doordashlite
 
+import android.content.Context.MODE_PRIVATE
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -13,10 +14,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.restaurant_list_fragment.*
 
-class RestaurantListFragment : Fragment() {
-    private val adapter = RestaurantListAdapter()
+class RestaurantListFragment : Fragment(), CheckListener {
+    private val adapter = RestaurantListAdapter(this)
 
     companion object {
+        private const val FAVORITE_PREFERENCE = "favorite_preference"
+
         fun newInstance() = RestaurantListFragment()
     }
 
@@ -46,7 +49,7 @@ class RestaurantListFragment : Fragment() {
     }
 
     private fun initViewModel(activity: FragmentActivity) {
-        viewModel = ViewModelProviders.of(activity, RestaurantListViewModelFactory(ApiClient.getClient))
+        viewModel = ViewModelProviders.of(activity, RestaurantListViewModelFactory(ApiClient.getClient, activity.getSharedPreferences(FAVORITE_PREFERENCE, MODE_PRIVATE)))
             .get(RestaurantListViewModel::class.java)
 
         initRecyclerView()
@@ -62,5 +65,9 @@ class RestaurantListFragment : Fragment() {
         restaurant_list.addItemDecoration(DividerItemDecoration(activity, RecyclerView.VERTICAL))
         restaurant_list.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
         restaurant_list.adapter = adapter
+    }
+
+    override fun onChecked(isFav: Boolean, id: Int) {
+        viewModel.onChecked(isFav, id)
     }
 }

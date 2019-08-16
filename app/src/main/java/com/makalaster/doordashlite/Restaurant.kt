@@ -9,15 +9,17 @@ data class Restaurant(@SerializedName("business")
                       @SerializedName("tags")
                       var tags: Array<String>,
                       @SerializedName("cover_img_url")
-                      var imageUrl: String) {
+                      var imageUrl: String,
+                      var favStatus: Boolean) {
 
     override fun equals(other: Any?): Boolean {
-        var equalTags = true
-
         if (other is Restaurant) {
+            if (other.tags.size != tags.size)
+                return false
+
             for (i in tags.indices) {
                 if (other.tags[i] != tags[i]) {
-                    equalTags = false
+                    return false
                 }
             }
         }
@@ -26,9 +28,7 @@ data class Restaurant(@SerializedName("business")
                 other.business.id == business.id &&
                 other.business.name == business.name &&
                 other.status == status &&
-                other.imageUrl == imageUrl &&
-                other.tags.size == tags.size &&
-                equalTags
+                other.imageUrl == imageUrl
     }
 
     override fun hashCode(): Int {

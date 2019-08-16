@@ -3,6 +3,8 @@ package com.makalaster.doordashlite
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
+import android.widget.CompoundButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
@@ -10,7 +12,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 
-class RestaurantListAdapter : ListAdapter<Restaurant, RestaurantViewHolder>(diff_callback) {
+class RestaurantListAdapter(private val checkListener: CheckListener) : ListAdapter<Restaurant, RestaurantViewHolder>(diff_callback) {
 
     companion object {
         val diff_callback = object : DiffUtil.ItemCallback<Restaurant>() {
@@ -42,6 +44,8 @@ class RestaurantListAdapter : ListAdapter<Restaurant, RestaurantViewHolder>(diff
         }
         holder.tags.text = tags
         holder.status.text = currentItem.status
+        holder.favoriteBox.isChecked = currentItem.favStatus
+        holder.favoriteBox.setOnCheckedChangeListener { _, p1 -> checkListener.onChecked(p1, currentItem.business.id) }
     }
 }
 
@@ -50,4 +54,10 @@ class RestaurantViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val name: TextView = itemView.findViewById(R.id.name)
     val tags: TextView = itemView.findViewById(R.id.tags)
     val status: TextView = itemView.findViewById(R.id.status)
+
+    val favoriteBox: CheckBox = itemView.findViewById(R.id.fav_box)
+}
+
+interface CheckListener {
+    fun onChecked(isFav: Boolean, id: Int)
 }
